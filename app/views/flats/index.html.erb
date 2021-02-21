@@ -1,12 +1,37 @@
 <div class="row">
     <div class="col-12">
-      <h1>All our flats</h1>
+      <h1> <%= link_to "All our flats", flats_path  %> </h1>
+      
     </div>
   </div>
 
   <div class="row">
     <div class="col-12">
-      <p>All <%=@flats.count%> flats.</p>
+      <%= link_to "+Add new flat", new_flat_path  %>
+
+      <%# Adding search form %>
+      
+      <form class="form-inline my-2 my-lg-0" method ="get" action="/flats">
+            <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search" aria-label="Search" value="<%= params[:query] %>">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+<%
+=begin %> 
+      <%# Adding search form %> 
+       <%= simple_form_for :search, url: flats_path, method: "GET", html: { class: 'form-inline my-2 my-lg-0' } do |f| %>
+          <%= f.input :name, label: false, placeholder: 'Search'%>   
+         <%= f.submit "Search", class: "btn btn-outline-success my-2 my-sm-0" %>
+        <% end %>
+      <%
+=end %>
+      <%# Showing results if any %>
+       <% if @query %>
+        <p>You searched for <strong><%= @query %></strong>. We found <%= @flats.count %> flats out of our <%= Flat.count %> on our website.</p>
+      <% else %>
+        <p>All <%= Flat.count %> flats.</p>
+      <% end %>
+
     </div>
   </div>
 
