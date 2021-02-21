@@ -3,42 +3,50 @@ class FlatsController < ApplicationController
     @flats = Flat.all
   end
 
-  def show
-    
-  end
-
   def new
-   
+   @flat = Flat.new
     # needed to instantiate the form_for
   end
 
   def create
-    # @restaurant = Restaurant.new(restaurant_params)
-    # if @restaurant.save
-    #   redirect_to restaurant_path(@restaurant)
-    # else
-    #   render :new
-    # end
+    @flat = Flat.new(flat_params)
+    if @flat.save
+      redirect_to flat_path(@flat)
+    else
+      render :new
+    end
+  end
+
+  def show
+    @flat = Flat.find(params[:id])
   end
 
   def edit
-   
-    
+    @flat = Flat.find(params[:id])
   end
 
   def update
-   
-    
+
+    @flat = Flat.find(params[:id])
+    @flat.update(flat_params)
+    if @flat.save
+      redirect_to flat_path(@flat)
+    else
+      render :new
+    end
   end
 
   def destroy
-   
-    
+    @flat = Flat.find(params[:id])
+    @flat.destroy
+     # no need for views
+     redirect_to flats_path
   end
 
   private
 
-  # def flats_params
-  #   params.require(:restaurant).permit(:name, :address, :category, :phone_number)
-  # end
+  def flat_params
+    params.require(:flat).permit(:name, :address, :description, :price_per_night, :number_of_guests)
+  end
+
 end
